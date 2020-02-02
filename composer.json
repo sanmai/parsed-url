@@ -1,0 +1,42 @@
+{
+    "name": "sanmai/parsed-url",
+    "type": "library",
+    "description": "Object-oriented interface to parse_url/parse_str",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alexey Kopytko",
+            "email": "alexey@kopytko.com"
+        }
+    ],
+    "require": {
+        "php": "^7.3"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16",
+        "infection/infection": ">=0.15",
+        "phan/phan": "^2.4",
+        "php-coveralls/php-coveralls": "^2.0",
+        "phpstan/phpstan": ">=0.12",
+        "phpunit/phpunit": "^8",
+        "vimeo/psalm": "^3.8"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "ParsedUrl\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\ParsedUrl\\": "tests/"
+        }
+    }
+}
