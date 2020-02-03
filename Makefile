@@ -61,16 +61,16 @@ ci-phpunit: ci-cs
 	$(SILENT) $(PHPDBG) $(PHPUNIT) $(PHPUNIT_ARGS)
 	cp build/logs/junit.xml build/logs/phpunit.junit.xml
 
-ci-infection: ci-phpunit
+ci-infection: ci-phpunit infection.json.dist
 	$(SILENT) $(PHP) $(INFECTION) $(INFECTION_ARGS)
 
 ci-phan: ci-cs
 	$(SILENT) $(PHP) $(PHAN) $(PHAN_ARGS)
 
-ci-phpstan: ci-cs
+ci-phpstan: ci-cs .phpstan.neon
 	$(SILENT) $(PHP) $(PHPSTAN) $(PHPSTAN_ARGS) --no-progress
 
-ci-psalm: ci-cs
+ci-psalm: ci-cs psalm.xml
 	$(SILENT) $(PHP) $(PSALM) $(PSALM_ARGS) --no-cache --shepherd
 
 ci-cs: prerequisites
@@ -88,12 +88,12 @@ composer-validate: test-prerequisites
 
 test-prerequisites: prerequisites composer.lock
 
-phpunit: cs
+phpunit: cs infection.json.dist
 	$(SILENT) $(PHP) $(PHPUNIT) $(PHPUNIT_ARGS) --verbose
 	cp build/logs/junit.xml build/logs/phpunit.junit.xml
 	$(SILENT) $(PHP) $(INFECTION) $(INFECTION_ARGS)
 
-analyze: cs
+analyze: cs .phpstan.neon psalm.xml
 	$(SILENT) $(PHP) $(PHAN) $(PHAN_ARGS) --color
 	$(SILENT) $(PHP) $(PHPSTAN) $(PHPSTAN_ARGS)
 	$(SILENT) $(PHP) $(PSALM) $(PSALM_ARGS)
