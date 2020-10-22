@@ -17,7 +17,7 @@ jobs:
     - php: nightly
   include:
     - stage: analyze
-      php: 7.3
+      php: 7.4
       install:
         - pecl install ast
         - phpenv config-rm xdebug.ini
@@ -29,6 +29,7 @@ jobs:
 cache:
   directories:
     - $HOME/.composer
+    - $HOME/.cache
     - build/cache
 
 install:
