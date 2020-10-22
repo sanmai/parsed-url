@@ -2,7 +2,7 @@
 
 # Use any most recent PHP version
 PHP=$(shell which php)
-PHPDBG=phpdbg -qrr
+PHPDBG=$(shell which phpdbg && echo -qrr || echo php)
 
 # Default parallelism
 JOBS=$(shell nproc)
@@ -52,14 +52,13 @@ all: test
 
 ci-test: SILENT=
 ci-test: prerequisites
-	$(SILENT) $(PHPDBG) $(PHPUNIT) $(PHPUNIT_COVERAGE_CLOVER) --group=$(PHPUNIT_GROUP)
+	$(SILENT) $(PHP) $(PHPUNIT) $(PHPUNIT_COVERAGE_CLOVER) --verbose --group=$(PHPUNIT_GROUP)
 
 ci-analyze: SILENT=
 ci-analyze: prerequisites ci-phpunit ci-infection ci-phan ci-phpstan ci-psalm
 
 ci-phpunit: ci-cs
 	$(SILENT) $(PHPDBG) $(PHPUNIT) $(PHPUNIT_ARGS)
-	cp build/logs/junit.xml build/logs/phpunit.junit.xml
 
 ci-infection: ci-phpunit infection.json.dist
 	$(SILENT) $(PHP) $(INFECTION) $(INFECTION_ARGS)
@@ -80,24 +79,37 @@ ci-cs: prerequisites
 # Development Workflow                                       #
 ##############################################################
 
-test: phpunit analyze composer-validate
+.PHONY: test
+test: analyze phpunit composer-validate yamllint
 
 .PHONY: composer-validate
 composer-validate: test-prerequisites
 	$(SILENT) $(COMPOSER) validate --strict
 
+.PHONY: test-prerequisites
 test-prerequisites: prerequisites composer.lock
 
+.PHONY: phpunit
 phpunit: cs infection.json.dist
 	$(SILENT) $(PHP) $(PHPUNIT) $(PHPUNIT_ARGS) --verbose
-	cp build/logs/junit.xml build/logs/phpunit.junit.xml
 	$(SILENT) $(PHP) $(INFECTION) $(INFECTION_ARGS)
 
-analyze: cs .phpstan.neon psalm.xml
+.PHONY: analyze
+analyze: phan phpstan psalm
+
+.PHONY: phan
+phan: cs
 	$(SILENT) $(PHP) $(PHAN) $(PHAN_ARGS) --color
+
+.PHONY: phpstan
+phpstan: cs .phpstan.neon
 	$(SILENT) $(PHP) $(PHPSTAN) $(PHPSTAN_ARGS)
+
+.PHONY: psalm
+psalm: cs psalm.xml
 	$(SILENT) $(PHP) $(PSALM) $(PSALM_ARGS)
 
+.PHONY: cs
 cs: test-prerequisites
 	$(SILENT) $(PHP) $(PHP_CS_FIXER) $(PHP_CS_FIXER_ARGS) --diff fix
 
@@ -128,3 +140,6 @@ build/cache:
 report-php-version:
 	# Using $(PHP)
 
+.PHONY: yamllint
+yamllint:
+	find .github/workflows/ -name \*.y*ml -print0 | xargs -n 1 -0 yamllint --no-warnings
