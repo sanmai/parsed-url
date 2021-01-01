@@ -28,7 +28,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          coverage: pcov
+          coverage: none
           tools: composer:v2
 
       - name: Cache dependencies
@@ -42,7 +42,6 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer remove --no-update --dev phan/phan phpstan/phpstan vimeo/psalm infection/infection friendsofphp/php-cs-fixer
           composer update --prefer-dist --no-interaction --no-progress ${{ matrix.dependencies }}
 
       - name: Validate composer.json
@@ -51,11 +50,5 @@ jobs:
 
       - name: Execute tests
         run: |
-          make ci-test
+          vendor/bin/phpunit
 
-      - name: Upload coverage report
-        continue-on-error: true
-        env:
-          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          php vendor/bin/php-coveralls -v
