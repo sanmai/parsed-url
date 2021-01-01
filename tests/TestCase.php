@@ -30,6 +30,6 @@ namespace Tests\ParsedUrl;
 /**
  * @coversNothing
  */
-class TestCase extends \PHPUnit\Framework\TestCase
+abstract class TestCase extends \LegacyPHPUnit\TestCase
 {
 }
