@@ -23,6 +23,8 @@
  * SOFTWARE.
  */
 
+declare(strict_types=1);
+
 namespace ParsedUrl;
 
 final class ParsedUrl implements Interfaces\ParsedUrl
