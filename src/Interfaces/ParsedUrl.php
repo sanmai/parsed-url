@@ -23,8 +23,6 @@
  * SOFTWARE.
  */
 
-declare(strict_types=1);
-
 namespace ParsedUrl\Interfaces;
 
 interface ParsedUrl

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 $header = trim(sprintf(
     'This code is licensed under the MIT License.%s',
     substr(
@@ -18,7 +16,7 @@ return PhpCsFixer\Config::create()
         '@PHP70Migration:risky' => true,
         '@PHP71Migration:risky' => true,
         'array_syntax' => ['syntax' => 'short'],
-        'declare_strict_types' => true,
+        'declare_strict_types' => false,
         'explicit_indirect_variable' => true,
         'no_superfluous_elseif' => true,
         'no_unreachable_default_argument_value' => true,
