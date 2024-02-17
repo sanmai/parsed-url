@@ -55,4 +55,5 @@ jobs:
 
       - name: Execute tests
         run: |
+          php vendor/bin/phpunit --migrate-configuration || true
           vendor/bin/phpunit

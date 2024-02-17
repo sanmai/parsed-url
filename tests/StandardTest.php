@@ -44,7 +44,7 @@ class StandardTest extends TestCase
         $this->assertNull($url->pass);
         $this->assertNull($url->query);
         $this->assertNull($url->fragment);
-        $this->assertObjectNotHasAttribute('foo', $url->query());
+        $this->assertFalse(isset($url->query()->foo));
 
         $this->assertSame('', $url->path);
         $this->assertSame('', (string) $url);
@@ -61,7 +61,7 @@ class StandardTest extends TestCase
         $this->assertSame('/index.html', $url->path);
         $this->assertSame('/index.html', (string) $url);
         $this->assertNull($url->query);
-        $this->assertObjectNotHasAttribute('foo', $url->query());
+        $this->assertFalse(isset($url->query()->foo));
         $this->assertNull($url->fragment);
     }
 
@@ -81,8 +81,8 @@ class StandardTest extends TestCase
         $this->assertSame('foo=bar&baz=1', $url->query);
         $this->assertSame('/test?foo=bar&baz=1', (string) $url);
 
-        $this->assertObjectHasAttribute('foo', $url->query());
-        $this->assertObjectHasAttribute('baz', $url->query());
+        $this->assertTrue(isset($url->query()->foo));
+        $this->assertTrue(isset($url->query()->baz));
 
         $this->assertSame('bar', $url->query()->foo);
         $this->assertSame('1', $url->query()->baz);
