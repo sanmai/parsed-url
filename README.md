@@ -5,8 +5,6 @@
 
     composer require sanmai/parsed-url
 
-The latest version requires PHP 7.0 or greater, including PHP 8.0+.
-
 # Use
 
 ```php
