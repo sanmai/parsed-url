@@ -10,7 +10,8 @@ $header = trim(sprintf(
     )
 ));
 
-return PhpCsFixer\Config::create()
+$config = new PhpCsFixer\Config();
+$config
     ->setRiskyAllowed(true)
     ->setRules([
         '@Symfony' => true,
@@ -43,10 +44,12 @@ return PhpCsFixer\Config::create()
         'return_assignment' => true,
         'array_syntax' => ['syntax' => 'short'],
         'array_indentation' => true,
-        'native_function_invocation' => null,
+        'native_function_invocation' => false,
     ])
     ->setFinder(
         PhpCsFixer\Finder::create()
         ->in(__DIR__)
     )
 ;
+
+return $config;

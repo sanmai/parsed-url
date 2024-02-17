@@ -27,7 +27,7 @@ declare(strict_types=1);
 
 require 'vendor/autoload.php';
 
-$url = new \ParsedUrl\ParsedUrl('https://www.example.com/index.html?foo=bar&baz=1');
+$url = new ParsedUrl\ParsedUrl('https://www.example.com/index.html?foo=bar&baz=1');
 
 var_dump($url->scheme); // string(5) "https"
 
