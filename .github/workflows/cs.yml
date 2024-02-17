@@ -16,7 +16,7 @@ jobs:
       matrix:
         php-version: ['8.2']
 
-    name: PHP ${{ matrix.php-version }}
+    name: Code Style
 
     steps:
       - uses: actions/checkout@v3
